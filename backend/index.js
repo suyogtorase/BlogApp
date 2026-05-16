@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import contactRouter from './routes/ContactRouter.js';
+import router from './routes/blogRouter.js';
 import path from 'path';
 
 dotenv.config();
@@ -19,22 +19,21 @@ app.use(cors({
 app.use(express.json());
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/Task")
+  .connect("mongodb://127.0.0.1:27017/Blog")
   .then(() => console.log("MongoDB connected successfully"))
   .catch((err) => {
     console.error("MongoDB connection error:", err.message);
     process.exit(1);
   });
 
-app.use('/api', contactRouter);
+app.use('/api', router);
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
 // Catch-all handler: send back React's index.html file for SPA routing
 // This should be last to catch all non-API routes
-// MONGO_URL=mongodb://127.0.0.1:27017
-// PORT=5000
+
 // curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 // sudo apt install -y nodejs
 
