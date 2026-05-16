@@ -8,7 +8,7 @@ import path from 'path';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 
 const __dirname = path.resolve();
 
@@ -19,9 +19,7 @@ app.use(cors({
 app.use(express.json());
 
 mongoose
-  .connect(process.env.MONGO_URL,{
-            dbName : "newClone",
-        })
+  .connect("mongodb://127.0.0.1:27017/Task")
   .then(() => console.log("MongoDB connected successfully"))
   .catch((err) => {
     console.error("MongoDB connection error:", err.message);
@@ -35,6 +33,11 @@ app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
 // Catch-all handler: send back React's index.html file for SPA routing
 // This should be last to catch all non-API routes
+// MONGO_URL=mongodb://127.0.0.1:27017
+// PORT=5000
+// curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+// sudo apt install -y nodejs
+
 app.use((req, res) => {
   // Don't serve index.html for API routes (should already be handled above)
   if (!req.path.startsWith('/api')) {
